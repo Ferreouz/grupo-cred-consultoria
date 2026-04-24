@@ -36,7 +36,7 @@ cd grupo-cred-consultoria
 ### Subir todos os serviços (banco + API)
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 Isso irá:
