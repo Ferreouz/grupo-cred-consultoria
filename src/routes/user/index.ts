@@ -2,7 +2,7 @@ import { Router, json } from "express";
 import prisma from "../../prisma";
 import { handlePrismaError } from "./prismaErrors";
 import { formatUserForDisplay } from "../../utils/user";
-import { createUserSchema, updateUserSchema } from "../../dto/create-user";
+import { createUserSchema, updateUserSchema } from "../../dto/user";
 import { hashPassword } from "../../utils/password";
 
 const router = Router();
@@ -11,9 +11,30 @@ router.use(json());
 /**
  * GET /users
  */
-router.get("/", async (_req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users.map(user => formatUserForDisplay(user)));
+router.get("/", async (req, res) => {
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit || 10);
+
+  const skip = (page - 1) * limit;
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.user.count(),
+  ]);
+
+  res.json({
+    data: users.map(user => formatUserForDisplay(user)),
+    meta: {
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+      limit,
+    },
+  });
 });
 
 /**
