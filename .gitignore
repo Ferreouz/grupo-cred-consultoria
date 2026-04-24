@@ -1,0 +1,9 @@
+node_modules
+mariadb_data
+dist
+public
+# Keep environment variables out of version control
+.env
+.env.prod
+
+/src/generated/prisma
