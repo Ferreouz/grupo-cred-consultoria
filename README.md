@@ -101,26 +101,11 @@ A API estará disponível em:
 ```
 http://localhost:8081
 ```
-
-### Autenticação
-
-O endpoint de criar pedido requer autenticação via **Bearer Token**. Após fazer login, inclua o token no header das requisições:
-
-```
-Authorization: Bearer <seu_token_jwt>
-```
-
-### Endpoints
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `POST` | `/login` | Login e geração de token JWT |
-
-> Consulte a documentação completa do Postman para ver todos os endpoints disponíveis com exemplos de request/response.
-
 ---
 
 ## Documentação da API (Postman)
+
+> Consulte a documentação completa do Postman para ver todos os endpoints disponíveis com exemplos de request/response.
 
 🔗 **[Acessar documentação no Postman](https://documenter.getpostman.com/view/26657571/2sBXqGqMGK)**
 
