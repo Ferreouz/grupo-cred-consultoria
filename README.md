@@ -122,7 +122,7 @@ Authorization: Bearer <seu_token_jwt>
 
 ## Documentação da API (Postman)
 
-🔗 **[Acessar documentação no Postman](https://www.postman.com/SEU-LINK-AQUI)**
+🔗 **[Acessar documentação no Postman](https://documenter.getpostman.com/view/26657571/2sBXqGqMGK)**
 
 ---
 
