@@ -1,0 +1,46 @@
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: grupo-cred-consultoria
+      MARIADB_USER: notanon
+      MARIADB_PASSWORD: SUPERSECRETPASSWORD
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      mariadb:
+        condition: service_healthy   # waits until MariaDB passes its healthcheck
+    environment:
+      DB_HOST: mariadb
+      DB_USER: notanon
+      DB_PASSWORD: SUPERSECRETPASSWORD
+      DATABASE_URL: "mysql://notanon:SUPERSECRETPASSWORD@mariadb:3306/grupo-cred-consultoria"
+      NODE_ENV: production
+      CORS_ORIGIN: "http://localhost:8081"
+      JWT_SECRET: "ca6ce70bbbe8a02b9786cfa639e1a6046a2ec4996314fcdff85eff008988ef13"
+      PORT: 8081
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
